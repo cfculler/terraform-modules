@@ -15,3 +15,9 @@ module "ec2_instance" {
     Environment = "sandbox"
   }
 }
+ 
+module "website_s3_bucket" {
+  source = "./modules/s3-bucket"
+
+  bucket_name = "carson-dob-7.1.3"
+}
