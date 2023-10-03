@@ -1,7 +1,7 @@
 name: Prep Terraform
 
 on: 
-    pull_request:
+    push:
         branches:
             - main
     workflow_dispatch:
@@ -13,6 +13,8 @@ permissions:
 jobs:
     prep:
         runs-on: ubuntu-latest
+        env:
+            TF_VAR_client_secret: ${{ secrets.CLIENT_SECRET }}
         steps:
             - name: Checkout Repo
               uses: actions/checkout@v2
@@ -33,11 +35,7 @@ jobs:
                 role-external-id: ${{ secrets.AWS_ROLE_EXTERNAL_ID }}
                 role-session-name: MySessionName
 
-            - name: Verify Terraform code checks out
+            - name: Initialize and Apply
               run: |
-                terraform fmt
                 terraform init
-                terraform validate
-                terraform plan
-
-    
+                terraform apply -auto-approve
